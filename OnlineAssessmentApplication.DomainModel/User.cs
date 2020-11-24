@@ -26,13 +26,15 @@ namespace OnlineAssessmentApplication.DomainModel
         public DateTime? ModifiedDate { get; set; }
         public int RoleId { get; set; }
         [ForeignKey("RoleId ")]
+
+
         public virtual Role Role { get; set; }
 
         public int CreatedBy { get; set; }
 
         public int ModifiedBy { get; set; }
-        
+
     }
-    
+
 
 }

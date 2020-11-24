@@ -155,6 +155,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\ChangeStatus.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -286,6 +287,7 @@
     <Compile Include="Filters\AuthenticationFilterAttribute.cs" />
     <Compile Include="Filters\LogCustomExceptionFilterAttribute.cs" />
     <Compile Include="Filters\StudentAuthorizeFilterAttribute.cs" />
+    <Compile Include="Filters\UserAuthorizationFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -303,6 +305,12 @@
     <Content Include="Views\Test\CreateTest.cshtml" />
     <Content Include="Views\Test\EditTest.cshtml" />
     <Content Include="Views\Test\DisplayAvailableTest.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangeProfile.cshtml" />
+    <Content Include="Views\Test\UpcomingTest.cshtml" />
+    <Content Include="Views\Shared\_GradeDropDownView.cshtml" />
+    <Content Include="Views\Shared\_SubjectDropDownView.cshtml" />
+    <Content Include="Views\Test\ViewScore.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

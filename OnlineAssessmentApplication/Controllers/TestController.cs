@@ -7,16 +7,20 @@ using System.Web.Mvc;
 
 namespace OnlineAssessmentApplication.Controllers
 {/// <summary>
-/// Add new test, update test,delete test
-/// </summary>
-   [AuthenticationFilter]
-    [LogCustomExceptionFilter]
+ /// Add new test, update test,delete test
+ /// </summary>
+    [AuthenticationFilter]
+    //[StudentAuthorizeFilter]
+    //[LogCustomExceptionFilter]
     public class TestController : Controller
     {
         readonly ITestService testService;
         public TestController(ITestService testService)
         {
             this.testService = testService;
+        }
+        public TestController()
+        {
         }
         // GET: Test
         public ActionResult CreateTest()
@@ -37,7 +41,7 @@ namespace OnlineAssessmentApplication.Controllers
 
 
                 testService.CreateNewTest(newTest);
-                return RedirectToAction("DisplayAvailableTest");
+                return RedirectToAction("UpcomingTest");
             }
             return View();
         }
@@ -48,6 +52,7 @@ namespace OnlineAssessmentApplication.Controllers
             return View(test);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditTest(EditTestViewModel editedData)
         {
             if (ModelState.IsValid)
@@ -55,7 +60,7 @@ namespace OnlineAssessmentApplication.Controllers
                 editedData.ModifiedBy = Convert.ToInt32(Session["CurrentUserID"]);
                 editedData.ModifiedTime = DateTime.Now;
                 testService.UpdateTest(editedData);
-                return RedirectToAction("DisplayAvailableTest");
+                return RedirectToAction("UpcomingTest");
             }
             return View();
 
@@ -64,12 +69,43 @@ namespace OnlineAssessmentApplication.Controllers
         {
 
             testService.DeleteTest(testId);
-            return RedirectToAction("DisplayAvailableTest");
+            return RedirectToAction("UpcomingTest");
         }
-        public ActionResult DisplayAvailableTest()
+
+        [HttpGet]
+        public ActionResult UpcomingTest(FilterPanel filterPanel)
         {
-            IEnumerable<TestViewModel> test = testService.DisplayAllDetails();
+            IEnumerable<TestViewModel> test = testService.DisplayAvailableTestDetails(filterPanel);
             return View(test);
+        }
+
+        public ActionResult VerifyPasscode(int passcode)
+        {
+            if (testService.VerifyPasscode(passcode))
+                return RedirectToAction("TakeTest");
+            else
+            {
+                TempData["Passcode_Alert"] = "Wrong Passcode.Please enter the correct passcode";
+                return RedirectToAction("UpcomingTest");
+            }
+        }
+
+        public ActionResult ViewScore(ResultViewModel resultViewModel)
+        {
+            IEnumerable<ResultViewModel> resultViewModels = testService.CalculateScore(resultViewModel);
+            return View(resultViewModels);
+        }
+        public ActionResult UpdateAcceptStatus(int testId)
+        {
+            testService.UpdateAcceptStatus(testId);
+            TempData["message"] = "Test Accepted Successfully";
+            return RedirectToAction("index", "dashboard");
+        }
+        public ActionResult UpdateRejectStatus(int testId)
+        {
+            testService.UpdateRejectStatus(testId);
+            TempData["message"] = "Test Rejected Successfully";
+            return RedirectToAction("index", "dashboard");
         }
     }
 }

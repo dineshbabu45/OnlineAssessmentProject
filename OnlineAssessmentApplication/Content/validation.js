@@ -17,7 +17,9 @@ $(function () {
     $('#TestDate').attr('min', maxDate);
 });
 
-
+function goBack() {
+    window.history.back();
+}
 function getMin() {
     var v = document.getElementById("TestDate").value + " " + document.getElementById("StartTime").value;
     var d = new Date(v);

@@ -81,6 +81,9 @@
     <Compile Include="EditTestViewModel.cs" />
     <Compile Include="EditUserPasswordViewModel.cs" />
     <Compile Include="EditUserViewModel.cs" />
+    <Compile Include="GradeViewModel.cs" />
+    <Compile Include="ResultViewModel.cs" />
+    <Compile Include="SubjectViewModel.cs" />
     <Compile Include="TestViewModel.cs" />
     <Compile Include="UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

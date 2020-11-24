@@ -16,11 +16,15 @@ namespace OnlineAssessmentApplication.Controllers
     /// User Login and Logout
     /// And Also CRED operations for User
     /// </summary>
-    [LogCustomExceptionFilter]
+    //[LogCustomExceptionFilter]
     public class AccountController : Controller
     {
         // GET: Account
         readonly IUserService userService;
+        public AccountController()
+        {
+
+        }
         public AccountController(IUserService service)
         {
             this.userService = service;
@@ -30,7 +34,7 @@ namespace OnlineAssessmentApplication.Controllers
 
         public ActionResult Login()
         {
-            ViewBag.randomNumber=userService.GenerateRandomNumber();
+
             return View();
         }
         [HttpPost]
@@ -39,7 +43,7 @@ namespace OnlineAssessmentApplication.Controllers
         {
 
             if (ModelState.IsValid)
-            {                                
+            {
                 if (this.IsCaptchaValid(string.Empty))
                 {
                     UserViewModel validatedData = userService.ValidateUser(user);
@@ -75,24 +79,27 @@ namespace OnlineAssessmentApplication.Controllers
             }
         }
 
-    
-    [HttpGet]
-    [AuthenticationFilter]
-    public ActionResult Logout()
-    {
-        FormsAuthentication.SignOut();
-        return RedirectToAction("Login");
-    }
+
+        [HttpGet]
         [AuthenticationFilter]
-        public ActionResult Display()
+        public ActionResult Logout()
         {
-            IEnumerable<User> data = userService.Display();
-            var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<User, CreateViewModel>(); });
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+        }
+
+        [AuthenticationFilter]
+        public ActionResult Display(string search)
+        {
+            IEnumerable<User> data = userService.Display(search);
+            var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<User, CreateViewModel>(); configurationExpression.IgnoreUnmapped(); });
             IMapper mapper = mapcategory.CreateMapper();
             var userData = mapper.Map<IEnumerable<User>, IEnumerable<CreateViewModel>>(data);
+            IEnumerable<Role> Roles = userService.RoleDisplay();
+            ViewBag.Roles = new SelectList(Roles, "RoleId", "RoleName");
             return View(userData);
         }
-        
+        [AuthenticationFilter]
         public ActionResult Create()
         {
 
@@ -103,17 +110,17 @@ namespace OnlineAssessmentApplication.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
+        [AuthenticationFilter]
         public ActionResult Create(CreateViewModel createviewmodel)
         {
-            
-            createviewmodel.CreatedBy =Convert.ToInt32(Session["CurrentUserId"]);
-             
+
+            createviewmodel.CreatedBy = Convert.ToInt32(Session["CurrentUserId"]);
+
             bool value = userService.CheckMailId(createviewmodel.EmailID);
 
             if ((value) && (ModelState.IsValid))
             {
-                var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<CreateViewModel, User>(); });
+                var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<CreateViewModel, User>(); configurationExpression.IgnoreUnmapped(); });
                 IMapper mapper = mapcategory.CreateMapper();
                 var userData = mapper.Map<CreateViewModel, User>(createviewmodel);
                 IEnumerable<Role> Roles = userService.RoleDisplay();
@@ -148,7 +155,7 @@ namespace OnlineAssessmentApplication.Controllers
             IEnumerable<Role> Roles = userService.RoleDisplay();
             ViewBag.Roles = new SelectList(Roles, "RoleId", "RoleName");
             User user = userService.Edit(userId);
-            var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<User, CreateViewModel>(); });
+            var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<User, CreateViewModel>(); configurationExpression.IgnoreUnmapped(); });
             IMapper mapper = mapcategory.CreateMapper();
             var userData = mapper.Map<User, CreateViewModel>(user);
             return View(userData);
@@ -168,7 +175,7 @@ namespace OnlineAssessmentApplication.Controllers
             {
 
                 createviewmodel.ModifiedBy = Convert.ToInt32(Session["CurrentUserId"]);
-                var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<CreateViewModel, User>(); });
+                var mapcategory = new MapperConfiguration(configurationExpression => { configurationExpression.CreateMap<CreateViewModel, User>(); configurationExpression.IgnoreUnmapped(); });
                 IMapper mapper = mapcategory.CreateMapper();
                 var userData = mapper.Map<CreateViewModel, User>(createviewmodel);
                 IEnumerable<Role> Roles = userService.RoleDisplay();
@@ -188,12 +195,60 @@ namespace OnlineAssessmentApplication.Controllers
 
 
         }
-        public ActionResult EditPassword()
+
+        [UserAuthorizationFilter]
+        public ActionResult ChangeProfile()
+        {
+            int id = Convert.ToInt32(Session["CurrentUserId"]);
+            UserViewModel userDetail = userService.GetUserByUserId(id);
+            EditUserViewModel dataToEdit = new EditUserViewModel() { EmailID = userDetail.EmailID, Name = userDetail.Name, PhoneNumber = userDetail.PhoneNumber, UserId = userDetail.UserId };
+            return View(dataToEdit);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserAuthorizationFilter]
+        public ActionResult ChangeProfile(EditUserViewModel editedData)
         {
 
-            return View();
-        }
+            if (ModelState.IsValid)
+            {
+                editedData.UserId = Convert.ToInt32(Session["CurrentUserID"]);
+                this.userService.UpdateUserDetails(editedData);
+                Session["CurrentUserName"] = editedData.Name;
+                return RedirectToAction("index", "dashboard");
 
-        
+            }
+            else
+            {
+                ModelState.AddModelError("x", "Invalid data");
+                return View(editedData);
+            }
+        }
+        [UserAuthorizationFilter]
+
+        public ActionResult ChangePassword()
+        {
+
+            int id = Convert.ToInt32(Session["CurrentUserId"]);
+            UserViewModel userDetail = userService.GetUserByUserId(id);
+            EditUserPasswordViewModel dataToEdit = new EditUserPasswordViewModel() { UserId = userDetail.UserId, Password = string.Empty, ConfirmPassword = string.Empty };
+            return View(dataToEdit);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [UserAuthorizationFilter]
+        public ActionResult ChangePassword(EditUserPasswordViewModel editedUserData)
+        {
+            if (ModelState.IsValid)
+            {
+                this.userService.UpdateUserPasswordDetails(editedUserData);
+                return RedirectToAction("index", "dashboard");
+            }
+            else
+            {
+                ModelState.AddModelError("x", "Invalid data");
+                return View(editedUserData);
+            }
+        }
     }
 }

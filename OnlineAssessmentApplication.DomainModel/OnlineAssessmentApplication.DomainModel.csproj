@@ -51,14 +51,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Answer.cs" />
     <Compile Include="AssessmentDbContext.cs" />
     <Compile Include="Migrations\202011161212069_InitialCreate.cs" />
     <Compile Include="Migrations\202011161212069_InitialCreate.designer.cs">
       <DependentUpon>202011161212069_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Question.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudentResponse.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>

@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 mb-4">
                         @Html.LabelFor(Model => Model.StartTime)
-                        @Html.TextBoxFor(Model => Model.StartTime, new { type = "Time", @class = "inputName" ,onchange="getMin()"})
+                        @Html.TextBoxFor(Model => Model.StartTime, new { type = "Time", @class = "inputName", onchange = "getMin()" })
                         @Html.ValidationMessageFor(Model => Model.StartTime, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 mb-4">
@@ -53,8 +53,9 @@
                         @Html.TextBoxFor(Model => Model.EndTime, new { type = "Time", @class = "inputName" })
                         @Html.ValidationMessageFor(Model => Model.EndTime, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col-md-12">
-                        <input type="submit" value="Create Questions" class="btn-dark" onclick="getMin()"/>
+                    <div class="col-xs-12 col-sm-12 col-md-6 mb-4"><a class="back-btn" onclick="goBack()">< Go Back</a></div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 mb-4">
+                        <input type="submit" value="Create Questions" class="btn-dark float-right" onclick="getMin()" />
                     </div>
                 </div>
             </div>

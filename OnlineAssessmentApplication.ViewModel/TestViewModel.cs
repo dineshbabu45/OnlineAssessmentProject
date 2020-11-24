@@ -9,7 +9,6 @@ namespace OnlineAssessmentApplication.ViewModel
         public int UserId { get; set; }
         [MaxLength(25, ErrorMessage = "Only 25 characters allowed")]
         [Display(Name = "Name of the Test")]
-        [Required(ErrorMessage = "Test name is required.")]
         public string TestName { get; set; }
         public string Status { get; set; }
         [Required(ErrorMessage = "Date is required.")]
@@ -37,21 +36,23 @@ namespace OnlineAssessmentApplication.ViewModel
         [Required]
         public int ModifiedBy { get; set; }
         [Required]
-        [Range(1, 10, ErrorMessage = "Choose Grade")]
+        [Range(1, 15, ErrorMessage = "Choose Grade")]
         public Grade Grade { get; set; }
     }
 
-        public enum Grade
-        {
-            I = 1, II, III, IV, V, VI, VII, VIII, IX, X
-        }
-        public enum Subject
-        {
-            English = 1, Tamil, Maths, Science,
-            [Display(Name = "Computer Science")]
-            ComputerScience, Geography
-        }
+    public enum Subject
+    {
+        English = 1, Tamil, Maths, Science,
+        [Display(Name = "Computer Science")]
+        ComputerScience, Geography
+    }
+    public class FilterPanel
+    {
+        public string SearchBy { get; set; }
+        public int SubjectId { get; set; }
+        public int GradeId { get; set; }
+    }
 
-    
+
 }
 

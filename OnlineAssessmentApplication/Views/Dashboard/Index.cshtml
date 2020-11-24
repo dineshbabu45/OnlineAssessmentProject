@@ -1,13 +1,14 @@
-﻿
-@{
-    ViewBag.Title = "Dashboard";
-}
+﻿@{ ViewBag.Title = "Dashboard"; }
 @if (TempData["Login_successfull_msg"] != null)
 {
     <p id="success_msg" class="h3 text-center alert alert-success">
         @TempData["Login_successfull_msg"]
-    </p>
-}
+    </p>}
+@if (TempData["message"] != null)
+{
+    <p id="status_msg" class="h3 text-center alert alert-success">
+        @TempData["message"]
+    </p>}
 <div class="row">
     <div class="jumbotron">
         <h1 class="display-4">Welcome to dashboard</h1>
@@ -24,4 +25,5 @@
 
 <script>
     $("#success_msg").delay(2000).fadeOut(2000);
+    $("#status_msg").delay(2000).fadeOut(2000);
 </script>
