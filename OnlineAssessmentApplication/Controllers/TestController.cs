@@ -38,9 +38,8 @@ namespace OnlineAssessmentApplication.Controllers
                 newTest.UserId = Convert.ToInt32(Session["CurrentUserID"]);
                 newTest.CreatedBy = newTest.UserId;
                 newTest.CreatedTime = DateTime.Now;
-
-
-                testService.CreateNewTest(newTest);
+                int testId = testService.CreateNewTest(newTest);
+                TempData["TestId"] = testId;
                 return RedirectToAction("UpcomingTest");
             }
             return View();
@@ -60,7 +59,7 @@ namespace OnlineAssessmentApplication.Controllers
                 editedData.ModifiedBy = Convert.ToInt32(Session["CurrentUserID"]);
                 editedData.ModifiedTime = DateTime.Now;
                 testService.UpdateTest(editedData);
-                return RedirectToAction("UpcomingTest");
+                return RedirectToAction("CreateQuestions", "Question");
             }
             return View();
 

@@ -76,12 +76,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnswerViewModel.cs" />
     <Compile Include="CreateTestViewModel.cs" />
     <Compile Include="CreateViewModel.cs" />
     <Compile Include="EditTestViewModel.cs" />
     <Compile Include="EditUserPasswordViewModel.cs" />
     <Compile Include="EditUserViewModel.cs" />
     <Compile Include="GradeViewModel.cs" />
+    <Compile Include="QuestionViewModel.cs" />
     <Compile Include="ResultViewModel.cs" />
     <Compile Include="SubjectViewModel.cs" />
     <Compile Include="TestViewModel.cs" />

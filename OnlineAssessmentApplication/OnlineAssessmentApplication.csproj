@@ -281,7 +281,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnswerController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Filters\AuthenticationFilterAttribute.cs" />
@@ -311,6 +313,12 @@
     <Content Include="Views\Shared\_GradeDropDownView.cshtml" />
     <Content Include="Views\Shared\_SubjectDropDownView.cshtml" />
     <Content Include="Views\Test\ViewScore.cshtml" />
+    <Content Include="Views\Question\CreateQuestions.cshtml" />
+    <Content Include="Views\Question\EditQuestion.cshtml" />
+    <Content Include="Views\Question\DisplayQuestions.cshtml" />
+    <Content Include="Views\Answer\CreateAnswer.cshtml" />
+    <Content Include="Views\Answer\DisplayAnswers.cshtml" />
+    <Content Include="Views\Answer\EditAnswer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

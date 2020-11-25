@@ -8,7 +8,7 @@ using System;
 
 namespace OnlineAssessmentApplicationUnitTesting
 {
-   [TestClass]
+    [TestClass]
     public class TestSevicesTests
     {
         private readonly TestService testService;
@@ -21,10 +21,10 @@ namespace OnlineAssessmentApplicationUnitTesting
         public void GetTestByTestId()
         {
             var testId = 5;
-           
-            testMock.Setup(t => t.GetTestByTestId(testId)).Returns(new Test() {TestId=testId } );
+
+            testMock.Setup(t => t.GetTestByTestId(testId)).Returns(new Test() { TestId = testId });
             var test = testService.GetTestByTestId(testId);
-            
+
             Assert.IsNotNull(test);
         }
         [TestMethod]
@@ -33,9 +33,9 @@ namespace OnlineAssessmentApplicationUnitTesting
             testMock.Setup(t => t.CreateNewTest(It.IsAny<Test>()));
 
 
-            testService.CreateNewTest(new CreateTestViewModel() { TestName = "Assessment", UserId = 5, Subject =Subject.English, Grade = Grade.III, TestDate = new DateTime(2020, 11, 19, 11, 50, 0), StartTime = new DateTime(2020, 11, 19, 11, 50, 0), EndTime = new DateTime(2020, 11, 19, 12, 50, 0) });
-           testMock.Verify(t => t.CreateNewTest(It.IsAny<Test>()),Times.Once);
-           
+            testService.CreateNewTest(new CreateTestViewModel() { TestName = "Assessment", UserId = 5, Subject = Subject.English, Grade = Grade.III, TestDate = new DateTime(2020, 11, 19, 11, 50, 0), StartTime = new DateTime(2020, 11, 19, 11, 50, 0), EndTime = new DateTime(2020, 11, 19, 12, 50, 0) });
+            testMock.Verify(t => t.CreateNewTest(It.IsAny<Test>()), Times.Once);
+
         }
         [TestMethod]
         public void UpdateTest()
@@ -53,6 +53,13 @@ namespace OnlineAssessmentApplicationUnitTesting
 
             testService.DeleteTest(testId);
             testMock.Verify(t => t.DeleteTest(testId), Times.Once);
+        }
+        [TestMethod]
+        public void CreateTestReturnsTestId()
+        {
+            testMock.Setup(t => t.CreateNewTest(It.IsAny<Test>())).Returns(3);
+            int testId=testService.CreateNewTest(new CreateTestViewModel() { TestName = "Assessment", UserId = 5, Subject = Subject.English, Grade = Grade.III, TestDate = new DateTime(2020, 11, 19, 11, 50, 0), StartTime = new DateTime(2020, 11, 19, 11, 50, 0), EndTime = new DateTime(2020, 11, 19, 12, 50, 0) });
+            Assert.IsNotNull(testId);
         }
     }
 }
